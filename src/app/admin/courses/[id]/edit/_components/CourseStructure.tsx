@@ -32,12 +32,15 @@ import {
   FileText,
   GripVertical,
   Trash,
-  Trash2,
 } from "lucide-react";
 import Link from "next/link";
 import { ReactNode, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { updateChapterOrder, updateLessonsOrder } from "./action";
+import NewChapterModal from "./NewChapterModal";
+import NewLessonModal from "./NewLessonModal";
+import DeleteDilogueAlter from "./DeleteDilogueAlter";
+import DeleteChapter from "./DeleteChapter";
 
 type CourseStructureProps = {
   course: AdminSingleCourseType;
@@ -293,6 +296,7 @@ const CourseStructure = ({ course }: CourseStructureProps) => {
       <Card>
         <CardHeader className="flex items-center justify-between flex-row border-b border-border">
           <CardTitle>Chapters</CardTitle>
+          <NewChapterModal courseId={course.id} />
         </CardHeader>
         <CardContent className="space-y-4">
           <SortableContext strategy={verticalListSortingStrategy} items={items}>
@@ -332,9 +336,10 @@ const CourseStructure = ({ course }: CourseStructureProps) => {
                           </p>
                         </div>
 
-                        <Button size={"icon"} variant={"outline"}>
-                          <Trash className="size-4" />
-                        </Button>
+                        <DeleteChapter
+                          courseId={course.id}
+                          chapterId={item.id}
+                        />
                       </div>
 
                       <CollapsibleContent>
@@ -368,9 +373,11 @@ const CourseStructure = ({ course }: CourseStructureProps) => {
                                         {l.title}
                                       </Link>
                                     </div>
-                                    <Button size={"icon"} variant={"outline"}>
-                                      <Trash2 className="size-4" />
-                                    </Button>
+                                    <DeleteDilogueAlter
+                                      courseId={course.id}
+                                      chapterId={item.id}
+                                      lessonId={l.id}
+                                    />
                                   </div>
                                 )}
                               </SortableItem>
@@ -378,13 +385,10 @@ const CourseStructure = ({ course }: CourseStructureProps) => {
                           </SortableContext>
 
                           <div className="py-2">
-                            <Button
-                              size={"lg"}
-                              variant={"outline"}
-                              className="w-full tracking-wide"
-                            >
-                              Create New Lesson
-                            </Button>
+                            <NewLessonModal
+                              chapterId={item.id}
+                              courseId={course.id}
+                            />
                           </div>
                         </div>
                       </CollapsibleContent>

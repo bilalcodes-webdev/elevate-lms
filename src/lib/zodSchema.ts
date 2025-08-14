@@ -59,4 +59,26 @@ export const courseSchema = z.object({
   }),
 });
 
+export const chapterSchema = z.object({
+  name: z
+    .string()
+    .min(3, { message: "Chapter name must contain 3 length or more" }),
+  courseId: z.string().uuid(),
+});
+
+export const lessonSchema = z.object({
+  name: z
+    .string()
+    .min(3, { message: "Chapter name must contain 3 length or more" }),
+  courseId: z.string().uuid(),
+  chapterId: z.string().uuid(),
+  description: z.string().optional(),
+  videoKey: z.string().optional(),
+  thumbnailUrl: z.string().optional(),
+});
+
+export type lessonSchemaType = z.infer<typeof lessonSchema>;
+
+export type chapterSchemaType = z.infer<typeof chapterSchema>;
+
 export type CourseSchemaType = z.infer<typeof courseSchema>;
