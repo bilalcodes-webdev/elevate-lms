@@ -1,6 +1,6 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { useCallback, useEffect, useState } from "react";
 import { FileRejection, useDropzone } from "react-dropzone";
 import { Card, CardContent } from "../ui/card";
@@ -60,9 +60,10 @@ function rejectionHandler(rejectedFiles: FileRejection[]) {
 type UploadFile = {
   value?: string;
   onChange?: (value: string) => void;
+  fileTypeAccepted: "image" | "video";
 };
 
-const UploadFile = ({ onChange, value }: UploadFile) => {
+const UploadFile = ({ onChange, value, fileTypeAccepted}: UploadFile) => {
   const fileUrl = ConstructUrl(value || "");
   const [fileState, setFileState] = useState<UploadFileProps>({
     error: false,
@@ -71,13 +72,13 @@ const UploadFile = ({ onChange, value }: UploadFile) => {
     uploading: false,
     progress: 0,
     isDeleting: false,
-    fileType: "image",
+    fileType: fileTypeAccepted,
     key: value,
-    objectUrl: fileUrl,
+    objectUrl: value ? fileUrl : undefined,
   });
 
-  async function fileUpload(file: File) {
-    setFileState((prev) => ({
+  const fileupload = useCallback(async (file:File) => {
+     setFileState((prev) => ({
       ...prev,
       progress: 0,
       uploading: true,
@@ -92,7 +93,7 @@ const UploadFile = ({ onChange, value }: UploadFile) => {
         body: JSON.stringify({
           fileName: file.name,
           size: file.size,
-          isImage: true,
+          isImage: fileTypeAccepted === "image" ? true : false,
           contentType: file.type,
         }),
       });
@@ -128,8 +129,6 @@ const UploadFile = ({ onChange, value }: UploadFile) => {
 
         xhr.onload = () => {
           if (xhr.status === 200 || xhr.status === 203) {
-            console.log("Hello");
-
             setFileState((prev) => ({
               ...prev,
               uploading: false,
@@ -157,7 +156,8 @@ const UploadFile = ({ onChange, value }: UploadFile) => {
         uploading: false,
       }));
     }
-  }
+  }, [fileTypeAccepted, onChange])
+
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -177,13 +177,13 @@ const UploadFile = ({ onChange, value }: UploadFile) => {
           error: false,
           id: uuidv4(),
           isDeleting: false,
-          fileType: "image",
+          fileType: fileTypeAccepted,
         });
 
-        fileUpload(file);
+        fileupload(file);
       }
     },
-    [fileState.objectUrl]
+    [fileState.objectUrl, fileTypeAccepted, fileupload]
   );
 
   const removeFile = async () => {
@@ -215,6 +215,7 @@ const UploadFile = ({ onChange, value }: UploadFile) => {
         return;
       }
 
+
       if (fileState.objectUrl && !fileState.objectUrl.startsWith("http")) {
         URL.revokeObjectURL(fileState.objectUrl);
       }
@@ -229,7 +230,7 @@ const UploadFile = ({ onChange, value }: UploadFile) => {
         error: false,
         id: null,
         isDeleting: false,
-        fileType: "image",
+        fileType: fileTypeAccepted,
       });
 
       toast.success("File Deleted Successfully");
@@ -253,7 +254,7 @@ const UploadFile = ({ onChange, value }: UploadFile) => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: { "image/*": [] },
+    accept: fileTypeAccepted === "video"  ? {"video/*": []}   : { "image/*": [] },
     maxFiles: 1,
     maxSize: 5 * 1024 * 1024,
     multiple: false,
@@ -281,6 +282,7 @@ const UploadFile = ({ onChange, value }: UploadFile) => {
           deleteFn={removeFile}
           isDeleting={fileState.isDeleting}
           objectUrl={fileState.objectUrl}
+          fileType={fileState.fileType}
         />
       );
 
@@ -291,7 +293,7 @@ const UploadFile = ({ onChange, value }: UploadFile) => {
     <Card
       {...getRootProps()}
       className={cn(
-        `relative border-2 border-dashed h-62 w-full transition-colors duration-300 ease-in-out`,
+        `relative border-2 border-dashed h-72 w-full transition-colors duration-300 ease-in-out`,
         isDragActive
           ? "border-primary bg-primary/10 border-solid"
           : "border-border hover:border-primary"

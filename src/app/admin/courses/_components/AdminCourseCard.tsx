@@ -8,6 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Skeleton } from "@/components/ui/skeleton";
 import { ConstructUrl } from "@/hooks/use-constructer";
 import {
   ArrowRight,
@@ -51,8 +52,9 @@ const AdminCourseCard = ({ data }: AdminCourseProps) => {
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link href={`/admin/courses/${data.slug}/delete`}>
-                <Trash2 className="h-4 w-4 mr-2 text-destructive" /> Delete Course
+              <Link href={`/admin/courses/${data.id}/delete`}>
+                <Trash2 className="h-4 w-4 mr-2 text-destructive" /> Delete
+                Course
               </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -65,8 +67,7 @@ const AdminCourseCard = ({ data }: AdminCourseProps) => {
           src={thumbnail || "/placeholder.jpg"}
           alt={data.title}
           fill
-          className="object-cover rounded-t-lg"
-  
+          className="object-cover w-full rounded-t-lg"
         />
       </div>
 
@@ -103,5 +104,38 @@ const AdminCourseCard = ({ data }: AdminCourseProps) => {
     </Card>
   );
 };
+
+export function AdminCourseCardSkeleton() {
+  return (
+    <Card className="group relative py-0 gap-4">
+      <div className="absolute top-2 right-2 z-10 flex items-center gap-2">
+        <Skeleton className="h-6 w-16 rounded-full" />
+        <Skeleton className="size-8 rounded-md" />
+      </div>
+
+      <div className="w-full relative h-fit">
+        <Skeleton className="w-full rounded-t-lg aspect-video h-[250px] object-cover" />
+      </div>
+
+      <CardContent className="p-4">
+        <Skeleton className="h-6 w-3/4 mb-2 rounded" />
+        <Skeleton className="h-4 w-full mb-4 rounded" />
+
+        <div className="mt-4 flex items-center gap-x-2">
+          <div className="flex items-center gap-x-2">
+            <Skeleton className="size-6 rounded-md" />
+            <Skeleton className="h-4 w-10 rounded" />
+          </div>
+          <div className="flex items-center gap-x-2">
+            <Skeleton className="size-6 rounded-md" />
+            <Skeleton className="h-4 w-10 rounded" />
+          </div>
+        </div>
+
+        <Skeleton className="mt-4 h-10 w-full rounded" />
+      </CardContent>
+    </Card>
+  );
+}
 
 export default AdminCourseCard;

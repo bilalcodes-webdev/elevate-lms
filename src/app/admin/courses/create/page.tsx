@@ -44,13 +44,14 @@ import { tryCatch } from "@/hooks/try-catch";
 import { CreateCourse } from "./action";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-
+import { useConfetti } from "@/hooks/use-confetti";
 
 const resolver = zodResolver(courseSchema) as Resolver<CourseSchemaType>;
 
 const AdminCreateCoursePage = () => {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const { triggerConfetti } = useConfetti();
   const form = useForm<CourseSchemaType>({
     resolver,
     defaultValues: {
@@ -78,8 +79,9 @@ const AdminCreateCoursePage = () => {
       }
 
       if (data.status === "success") {
-        form.reset();
         toast.success(data.message);
+        triggerConfetti();
+        form.reset();
         router.push("/admin/courses");
       }
 
@@ -211,6 +213,7 @@ const AdminCreateCoursePage = () => {
                     <FormLabel>Image Thumbnail</FormLabel>
                     <FormControl>
                       <UploadFile
+                        fileTypeAccepted="image"
                         onChange={field.onChange}
                         value={field.value}
                       />

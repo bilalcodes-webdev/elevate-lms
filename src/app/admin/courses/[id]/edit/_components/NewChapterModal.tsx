@@ -39,6 +39,7 @@ const NewChapterModal = ({ courseId }: { courseId: string }) => {
       const { data, error } = await tryCatch(createNewChapter(values));
 
       if (error) {
+    
         toast.error("Unexpected error,Please try again");
       }
 
@@ -54,6 +55,9 @@ const NewChapterModal = ({ courseId }: { courseId: string }) => {
   };
 
   const handleOpen = (open: boolean) => {
+    if(!open){
+      form.reset()
+    }
     setisOpen(open);
   };
   const form = useForm<chapterSchemaType>({

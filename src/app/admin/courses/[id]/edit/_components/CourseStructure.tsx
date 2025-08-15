@@ -31,7 +31,6 @@ import {
   ChevronRight,
   FileText,
   GripVertical,
-  Trash,
 } from "lucide-react";
 import Link from "next/link";
 import { ReactNode, useEffect, useState } from "react";

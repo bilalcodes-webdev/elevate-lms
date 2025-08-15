@@ -59,6 +59,9 @@ const NewLessonModal = ({
   };
 
   const handleOpen = (open: boolean) => {
+    if(!open){
+      form.reset()
+    }
     setisOpen(open);
   };
   const form = useForm<lessonSchemaType>({

@@ -28,7 +28,7 @@ const CourseEditPage = async ({ params }: EditProps) => {
         <span className="text-primary underline text-xl">{course.title}</span>
       </h1>
 
-      <Tabs defaultValue="basic-info" className="w-full">
+      <Tabs defaultValue="course-st" className="w-full">
         <TabsList className="grid grid-cols-2 w-full">
           <TabsTrigger value="basic-info">Basic Info</TabsTrigger>
           <TabsTrigger value="course-st">Course Structure</TabsTrigger>

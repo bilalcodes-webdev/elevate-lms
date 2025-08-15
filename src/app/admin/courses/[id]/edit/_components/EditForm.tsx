@@ -184,7 +184,7 @@ const EditForm = ({ courseId, courseData }: props) => {
               <FormItem className="w-full">
                 <FormLabel>Image Thumbnail</FormLabel>
                 <FormControl>
-                  <UploadFile onChange={field.onChange} value={field.value} />
+                  <UploadFile  fileTypeAccepted="image" onChange={field.onChange} value={field.value} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
