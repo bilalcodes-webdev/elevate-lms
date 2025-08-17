@@ -17,7 +17,6 @@ type LessonProps = {
 
 const LessonItem = ({ lesson, slug, isActive, completed }: LessonProps) => {
 
-  console.log(completed)
   return (
     <Link
       href={`/dashboard/${slug}/${lesson.id}`}
