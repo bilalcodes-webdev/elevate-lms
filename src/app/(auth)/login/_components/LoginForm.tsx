@@ -43,7 +43,7 @@ const LoginForm = () => {
   };
   // ✅ Github login
   const handleSignInWithGoogle = () => {
-    setGithubTransition(async () => {
+    setGoogleTransition(async () => {
       await authClient.signIn.social({
         provider: "google",
         callbackURL: "/",
