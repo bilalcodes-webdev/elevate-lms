@@ -10,17 +10,19 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { authClient } from "@/lib/auth-client";
-import { GithubIcon, Loader, Send } from "lucide-react";
+import { GithubIcon, Loader, Send, Chrome } from "lucide-react"; // ✅ Added Chrome as Google Icon
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 
 const LoginForm = () => {
   const [githubPending, setGithubTransition] = useTransition();
+  const [googlePending, setGoogleTransition] = useTransition(); // ✅ New Google state
   const [email, setEmail] = useState("");
   const [emailPending, setEmailTransition] = useTransition();
   const router = useRouter();
 
+  // ✅ Github login
   const handleSignInWithGithub = () => {
     setGithubTransition(async () => {
       await authClient.signIn.social({
@@ -39,7 +41,27 @@ const LoginForm = () => {
       });
     });
   };
+  // ✅ Github login
+  const handleSignInWithGoogle = () => {
+    setGithubTransition(async () => {
+      await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "/",
+        fetchOptions: {
+          onSuccess: () => {
+            toast.success("Login Successfully with Google");
+          },
+          onError: (error) => {
+            toast.error(
+              error.error.message || "Something went wrong, Please try again"
+            );
+          },
+        },
+      });
+    });
+  };
 
+  // ✅ Email login
   const handleEmailLogIn = () => {
     setEmailTransition(async () => {
       await authClient.emailOtp.sendVerificationOtp({
@@ -62,9 +84,10 @@ const LoginForm = () => {
     <Card>
       <CardHeader>
         <CardTitle className="text-xl">Welcome Back!</CardTitle>
-        <CardDescription>Login With Your Github Email Account</CardDescription>
+        <CardDescription>Login with your GitHub, Google or Email account</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-3">
+        {/* GitHub Button */}
         <Button
           onClick={handleSignInWithGithub}
           disabled={githubPending}
@@ -79,7 +102,27 @@ const LoginForm = () => {
           ) : (
             <>
               <GithubIcon className="size-4" />
-              Sign In With Github
+              Sign In With GitHub
+            </>
+          )}
+        </Button>
+
+        {/* ✅ Google Button */}
+        <Button
+          onClick={handleSignInWithGoogle}
+          disabled={googlePending}
+          variant={"outline"}
+          className="w-full"
+        >
+          {googlePending ? (
+            <>
+              <Loader className="size-4 animate-spin" />
+              Signing...
+            </>
+          ) : (
+            <>
+              <Chrome className="size-4" />
+              Sign In With Google
             </>
           )}
         </Button>
@@ -90,6 +133,7 @@ const LoginForm = () => {
           </span>
         </div>
 
+        {/* Email login */}
         <div className="grid gap-3">
           <div className="grid gap-2">
             <Label htmlFor="email">Email Address</Label>
@@ -121,4 +165,5 @@ const LoginForm = () => {
     </Card>
   );
 };
+
 export default LoginForm;
