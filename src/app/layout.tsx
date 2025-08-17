@@ -6,7 +6,6 @@ import { Toaster } from "sonner";
 
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "500", "700"], // choose the weights you need
 });
 
 export const metadata: Metadata = {
