@@ -2,6 +2,12 @@ import { ReactNode } from "react";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { SiteHeader } from "@/components/sidebar/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Elevate LMS | Admin",
+  description: "Access your Elevate LMS admin dashboard to track your records.",
+};
 
 function AdminLayout({ children }: { children: ReactNode }) {
   return (

@@ -256,7 +256,7 @@ const UploadFile = ({ onChange, value, fileTypeAccepted}: UploadFile) => {
     onDrop,
     accept: fileTypeAccepted === "video"  ? {"video/*": []}   : { "image/*": [] },
     maxFiles: 1,
-    maxSize: 5 * 1024 * 1024,
+    maxSize: 50 * 1024 * 1024,
     multiple: false,
     onDropRejected: rejectionHandler,
     disabled: fileState.uploading || !!fileState.objectUrl,

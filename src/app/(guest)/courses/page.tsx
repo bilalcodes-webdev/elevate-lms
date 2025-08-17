@@ -4,6 +4,8 @@ import PublicCourses, {
 } from "../_components/PublicCourses";
 import { Suspense } from "react";
 
+export const dynamic = "force-dynamic";
+
 const PublicCoursesRoute = () => {
   return (
     <div className="mt-5">

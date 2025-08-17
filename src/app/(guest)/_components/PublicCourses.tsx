@@ -12,12 +12,11 @@ type PublicCoursesProps = {
   data: PublicCoursesType;
 };
 
-
 const PublicCourses = ({ data }: PublicCoursesProps) => {
   const thumbnail = ConstructUrl(data.fileKey);
 
   return (
-    <Card className="group relative py-0 gap-0">
+    <Card className="group relative py-0 gap-0 overflow-hidden">
       <Badge className="absolute top-2 right-2 z-10">{data.level}</Badge>
 
       <Image
@@ -25,7 +24,7 @@ const PublicCourses = ({ data }: PublicCoursesProps) => {
         alt={data.title}
         width={600}
         height={400}
-        className="w-full rounded-t-lg aspect-video h-full object-cover"
+        className="w-full rounded-t-lg aspect-video h-full object-cover transform transition-transform duration-300 group-hover:scale-105"
       />
 
       <CardContent className="p-4">

@@ -1,7 +1,6 @@
 import { getPublicSingleCourse } from "@/app/data/courses/get-public-single-course";
 import RenderDescription from "@/components/rich-text-editor/RenderDescription";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Collapsible,
@@ -19,15 +18,20 @@ import {
 } from "@tabler/icons-react";
 import { CheckIcon } from "lucide-react";
 import Image from "next/image";
+import { checkUserEnolmentStatus } from "@/app/data/courses/get-user-enrolled";
+import Link from "next/link";
+import EnrollmentButton from "./EnrollmentButton";
+import { buttonVariants } from "@/components/ui/button";
 
 const PublicCourseDetailPage = async ({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) => {
   const { slug } = await params;
 
   const course = await getPublicSingleCourse(slug);
+  const isEnroll = await checkUserEnolmentStatus(course.id);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-4">
@@ -258,7 +262,17 @@ const PublicCourseDetailPage = async ({
                 </ul>
               </div>
 
-              <Button className="w-full">Enroll Now!</Button>
+              {isEnroll ? (
+                <Link
+                  className={buttonVariants({ className: "w-full" })}
+                  href={"/dashboard"}
+                >
+                  Watch Now
+                </Link>
+              ) : (
+                <EnrollmentButton courseId={course.id} />
+              )}
+
               <p className="mt-3 text-center text-xs text-muted-foreground">
                 30-Days money back gurantee
               </p>

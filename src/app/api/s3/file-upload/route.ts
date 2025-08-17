@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { s3 } from "@/lib/s3-client";
 import aj from "@/lib/arcjet";
-import { detectBot, fixedWindow } from "@arcjet/next";
+import { fixedWindow } from "@arcjet/next";
 import { requireAdmin } from "@/app/data/admin/require-admin";
 
 const fileSchema = z.object({
@@ -17,20 +17,13 @@ const fileSchema = z.object({
   contentType: z.string().min(1, { message: "Content is required" }),
 });
 
-const arcjet = aj
-  .withRule(
-    detectBot({
-      mode: "LIVE",
-      allow: [],
-    })
-  )
-  .withRule(
-    fixedWindow({
-      mode: "LIVE",
-      window: "1m",
-      max: 5,
-    })
-  );
+const arcjet = aj.withRule(
+  fixedWindow({
+    mode: "LIVE",
+    window: "1m",
+    max: 5,
+  })
+);
 
 export async function POST(request: Request) {
   const sessions = await requireAdmin();

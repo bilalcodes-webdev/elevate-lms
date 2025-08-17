@@ -21,7 +21,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   const router = useRouter();
   return (
     <div className="flex justify-center items-center h-full w-full mt-14">
-      <Card className="w-full max-w-2xl text-center p-6">
+      <Card className="w-full max-w-3xl text-center p-6">
         <CardContent className="flex flex-col items-center space-y-4">
           <AlertCircle className="w-12 h-12 text-gray-400" />
           <h2 className="text-xl font-semibold">{title}</h2>

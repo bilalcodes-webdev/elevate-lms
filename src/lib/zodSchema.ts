@@ -30,7 +30,7 @@ export const courseSchema = z.object({
   description: z
     .string()
     .min(3, { message: "At least 3 characters required." })
-    .max(500, { message: "Max 250 characters allowed." }),
+    .max(2000, { message: "Max 2000 characters allowed." }),
 
   fileKey: z.string().min(1, { message: "Please upload a file." }),
 
@@ -50,7 +50,7 @@ export const courseSchema = z.object({
   smallDescription: z
     .string()
     .min(3, { message: "At least 3 characters required." })
-    .max(150, { message: "Max 150 characters allowed." }),
+    .max(250, { message: "Max 250 characters allowed." }),
 
   slug: z.string().min(3, { message: "Slug must be at least 3 characters." }),
 

@@ -13,16 +13,11 @@ import { ApiResponse } from "@/lib/type";
 import { courseSchema, CourseSchemaType } from "@/lib/zodSchema";
 import prisma from "@/lib/prisma";
 import aj from "@/lib/arcjet";
-import { detectBot, fixedWindow, request } from "@arcjet/next";
+import { fixedWindow, request } from "@arcjet/next";
 import { revalidatePath } from "next/cache";
 
 const arcjet = aj
-  .withRule(
-    detectBot({
-      mode: "LIVE",
-      allow: [],
-    })
-  )
+
   .withRule(
     fixedWindow({
       mode: "LIVE",

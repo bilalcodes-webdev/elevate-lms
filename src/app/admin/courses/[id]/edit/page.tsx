@@ -10,13 +10,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import EditForm from "./_components/EditForm";
 import CourseStructure from "./_components/CourseStructure";
 
-type EditProps = {
-  params: {
-    id: string;
-  };
-};
 
-const CourseEditPage = async ({ params }: EditProps) => {
+const CourseEditPage = async ({ params }: {params: Promise<{id: string}>}) => {
   const { id } = await params;
 
   const course = await AdminGetCourse(id);

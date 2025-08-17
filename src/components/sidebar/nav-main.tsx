@@ -26,24 +26,26 @@ export function NavMain({
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
-        <SidebarMenu>
-          <SidebarMenuItem className="flex items-center gap-2">
-            <SidebarMenuButton
-              asChild
-              tooltip="Quick Create"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear"
-            >
-              <Link
-                href="/admin/courses/create"
-                className="flex items-center gap-3"
+        {pathname === "/admin" && (
+          <SidebarMenu>
+            <SidebarMenuItem className="flex items-center gap-2">
+              <SidebarMenuButton
+                asChild
+                tooltip="Quick Create"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear"
               >
-                {" "}
-                <IconCirclePlusFilled />
-                <span>Quick Create</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+                <Link
+                  href="/admin/courses/create"
+                  className="flex items-center gap-3"
+                >
+                  {" "}
+                  <IconCirclePlusFilled />
+                  <span>Quick Create</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        )}
         <SidebarMenu>
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
@@ -53,11 +55,15 @@ export function NavMain({
                   className={cn(
                     "flex items-center gap-3 rounded-md px-2 py-1 transition-colors duration-200",
                     pathname === item.url
-                      ? "bg-muted text-primary font-medium" // dark-ish bg jab active
+                      ? "bg-accent text-accent-foreground" // dark-ish bg jab active
                       : "hover:bg-muted"
                   )}
                 >
-                  {item.icon && <item.icon />}
+                  {item.icon && (
+                    <item.icon
+                      className={cn(pathname === item.url && "text-primary")}
+                    />
+                  )}
                   <span>{item.title}</span>
                 </Link>
               </SidebarMenuButton>

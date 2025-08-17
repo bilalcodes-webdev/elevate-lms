@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
 import Navbar from "./_components/Navbar";
 
+
 const GuestLayout = ({ children }: { children: ReactNode }) => {
   return (
     <div>

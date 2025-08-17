@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
 import { Loader2, Trash } from "lucide-react";
-import { debugCourseRelations, deleteCourse } from "../action";
+import { deleteCourse } from "../action";
 
 const DeleteActions = ({ courseId }: { courseId: string }) => {
   const [isPending, startTransition] = useTransition();
@@ -15,7 +15,6 @@ const DeleteActions = ({ courseId }: { courseId: string }) => {
 
   const deletionHandler = () => {
     startTransition(async () => {
-      await debugCourseRelations(courseId);
       const { data, error } = await tryCatch(deleteCourse(courseId));
 
       if (error) {

@@ -4,6 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import logo from "../../../public/logo.png";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Elevate LMS | Login to Your Account",
+  description:
+    "Access your Elevate LMS account to continue learning and track your progress.",
+};
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -37,7 +44,9 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
 
         <div className="text-balance text-sm text-center text-muted-foreground">
           By clicking continue, you are agree to our
-          <span className="hover:text-primary hover:underline">Terms of Servives </span>
+          <span className="hover:text-primary hover:underline">
+            Terms of Servives{" "}
+          </span>
           and <span>Privacy Policey</span>
         </div>
       </div>

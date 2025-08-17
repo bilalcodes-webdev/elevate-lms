@@ -6,13 +6,23 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { Button } from "@/components/ui/button";
-import { useState, useTransition, useEffect } from "react";
+import { useState, useTransition, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
-export default function OTPVerifyUI() {
+// Main page component
+export default function VerifyRequest() {
+  return (
+    <Suspense>
+      <OTPVerifyUI />
+    </Suspense>
+  );
+}
+
+// OTP verification UI
+function OTPVerifyUI() {
   const [otp, setOtp] = useState("");
   const [isVerifying, startTransition] = useTransition();
   const [cooldown, setCooldown] = useState(60);
@@ -20,23 +30,25 @@ export default function OTPVerifyUI() {
   const email = params.get("email");
   const router = useRouter();
 
+  // Cooldown timer for resending OTP
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    if (cooldown <= 0) return;
 
-    if (cooldown > 0) {
-      interval = setInterval(() => {
-        setCooldown((prev) => prev - 1);
-      }, 1000);
-    }
+    const interval = setInterval(() => {
+      setCooldown((prev) => prev - 1);
+    }, 1000);
 
     return () => clearInterval(interval);
   }, [cooldown]);
 
+  // Verify OTP
   const verifyOtp = () => {
+    if (!email || otp.length !== 6) return;
+
     startTransition(async () => {
       await authClient.signIn.emailOtp({
-        email: email!,
-        otp: otp,
+        email,
+        otp,
         fetchOptions: {
           onSuccess: () => {
             toast.success("Email verified successfully.");
@@ -50,6 +62,7 @@ export default function OTPVerifyUI() {
     });
   };
 
+  // Resend OTP
   const resendOtp = async () => {
     if (!email || cooldown > 0) return;
 
@@ -79,7 +92,7 @@ export default function OTPVerifyUI() {
         </p>
       </div>
 
-      {/* OTP */}
+      {/* OTP Input */}
       <div className="flex justify-center">
         <InputOTP maxLength={6} value={otp} onChange={setOtp}>
           <InputOTPGroup className="gap-2">
@@ -110,7 +123,7 @@ export default function OTPVerifyUI() {
         )}
       </Button>
 
-      {/* Resend */}
+      {/* Resend OTP */}
       <p className="text-xs text-center text-muted-foreground">
         Didn’t receive a code?{" "}
         <button

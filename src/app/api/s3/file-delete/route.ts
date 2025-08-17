@@ -11,12 +11,7 @@ import { headers } from "next/headers";
 import { requireAdmin } from "@/app/data/admin/require-admin";
 
 const arcjet = aj
-  .withRule(
-    detectBot({
-      mode: "LIVE",
-      allow: [],
-    })
-  )
+
   .withRule(
     fixedWindow({
       mode: "LIVE",
